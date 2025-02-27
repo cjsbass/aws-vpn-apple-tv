@@ -29,7 +29,7 @@ fi
 echo -e "\n${GREEN}Step 1: Creating a security group for your VPN server...${NC}"
 # Create security group
 SG_ID=$(aws ec2 create-security-group \
-    --group-name VPN-SecurityGroup \
+    --group-name VPN-SecurityGroup-$(date +%s) \
     --description "Security group for VPN server" \
     --query 'GroupId' \
     --output text)
@@ -51,9 +51,9 @@ aws ec2 authorize-security-group-ingress \
     --cidr 0.0.0.0/0
 
 echo -e "\n${GREEN}Step 2: Creating EC2 instance...${NC}"
-# Create EC2 instance (using Amazon Linux 2)
+# Create EC2 instance (using Amazon Linux 2 for eu-west-2 region)
 INSTANCE_ID=$(aws ec2 run-instances \
-    --image-id ami-0df7a207adb9748c7 \
+    --image-id ami-0eebf19cec0b40d10 \
     --instance-type t2.micro \
     --key-name MyVPNKeyPair \
     --security-group-ids $SG_ID \
